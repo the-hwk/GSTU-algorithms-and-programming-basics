@@ -68,12 +68,14 @@ Advert inputAdvert();
 /**
  * Преобразование типа объявления в строку
  * @param type Тип объявления
+ * @return Строковое представление типа объявления
  */
 char* typeToStr(Type type);
 
 /**
  * Преобразование даты объявления в строку
  * @param date Дата
+ * @return Строковое представление даты
  */
 char* dateToStr(Date date);
 
