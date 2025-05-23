@@ -106,9 +106,9 @@ void writeToBinaryFile(char *filepath, AdvertsCollection collection) {
 ```
 
 Полная программа для работы со структурами и бинарными файлами представлена в файлах:
-- `advert.h` - заголовочный файл, содержит прототипы функций и объявления структур;
-- `advert.c` - содержит реализации функций, описанных в предыдущем файле;
-- `main.c` - точка старта программы.
+- [advert.h](https://github.com/the-hwk/GSTU-algorithms-and-programming-basics/blob/main/file-example/advert.h) - заголовочный файл, содержит прототипы функций и объявления структур;
+- [advert.c](https://github.com/the-hwk/GSTU-algorithms-and-programming-basics/blob/main/file-example/advert.c) - содержит реализации функций, описанных в предыдущем файле;
+- [main.c](https://github.com/the-hwk/GSTU-algorithms-and-programming-basics/blob/main/file-example/main.c) - точка старта программы.
 
 Для компиляции и сборки программы необходимо выполнить следующую команду:
 ```
@@ -116,6 +116,8 @@ gcc .\main.c .\advert.c -o app
 ```
 
 При первом запуске попробуйте сразу прочитать бинарный файл (`data.bin`) (пункт 6 в меню). Он уже содержит две записи. После чтения выведите их (пункт 4 в меню).
+
+[Подробнее про работу с файлами](https://metanit.com/c/tutorial/7.3.php)
 
 ## Вывод в табличном виде
 
