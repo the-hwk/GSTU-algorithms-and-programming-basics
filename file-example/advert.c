@@ -8,6 +8,51 @@
 #include <stdlib.h>
 #include "advert.h"
 
+// Шаблон для вывода элементов структуры
+const char *TEMPLATE = "|%2s|%-30s|%-10s|%-10s|%-70s|\n";
+
+AdvertsCollection readFromBinaryFile(char *filepath) {
+    // Открываем бинарный файл в режиме чтения
+    FILE *file = fopen(filepath, "rb");
+
+    // Проверяем открылся ли файл
+    // (условие: если он не открылся)
+    if (file == NULL) {
+        // Выводим ошибку в стандартный поток ошибок
+        perror("Ошибка открытия файла!");
+        // Завершаем программу с кодом ошибки 1 (ошибка выполнения)
+        exit(EXIT_FAILURE);
+    }
+
+    AdvertsCollection collection;
+
+    // Выполняем чтение файла
+    fread(&collection, sizeof(AdvertsCollection), 1, file);
+    // И закрываем его
+    fclose(file);
+
+    return collection;
+}
+
+void writeToBinaryFile(char *filepath, AdvertsCollection collection) {
+    // Открываем файл для записи
+    // Если файла не существует, то он будет создан
+    FILE *file = fopen(filepath, "wb");
+
+    // Проверяем открылся ли файл
+    // (обычно ошибка бывает, когда файловая система
+    // запрещает создание файла)    
+    if (file == NULL) {
+        perror("Ошибка открытия/создания файла!");
+        exit(EXIT_FAILURE);
+    }
+
+    // Записываем структуру в файл
+    fwrite(&collection, sizeof(AdvertsCollection), 1, file);
+    // И закрываем его
+    fclose(file);
+}
+
 /**
  * Вспомогательная функция для ввода строки.
  * Очищает буфер потока ввода и заменяет
@@ -116,15 +161,35 @@ char* dateToStr(Date date) {
     return strDate;
 }
 
-void printAdvert(Advert advert) {
-    printf("Customer fullname: %s\n", advert.fullName);
-    printf("Type: %s\n", typeToStr(advert.type));
+/**
+ * Вывод шапки таблицы
+ */
+void printHead() {
+    printf(TEMPLATE, "#", "Customer", "Type", "Date", "Text");
+}
 
+void printAdvert(Advert advert, int number) {
     char *strDate = dateToStr(advert.date);
-    printf("Date: %s\n", dateToStr(advert.date));
-    free(strDate);    // освобождаем динамически выделенную память
 
-    printf("Text:\n%s\n", advert.text);
+    char strNumber[2];
+    sprintf(strNumber, "%d", number);
+
+    printf(TEMPLATE,
+        strNumber,
+        advert.fullName, 
+        typeToStr(advert.type), 
+        strDate,
+        advert.text);
+
+    free(strDate);
+}
+
+void printAllAdverts() {
+    printHead();
+
+    for (int i = 0; i < db.count; i++) {
+        printAdvert(db.elements[i], (i + 1));
+    }
 }
 
 void saveAdvert(Advert advert) {

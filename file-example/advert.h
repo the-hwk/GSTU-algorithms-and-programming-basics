@@ -66,6 +66,37 @@ Date inputDate();
 Advert inputAdvert();
 
 /**
+ * Коллекция для хранения объявлений
+ * @param count Количество объявлений
+ * @param elements Массив объектов структур, описывающих объявление
+ */
+typedef struct {
+    int count;
+    Advert elements[10];
+} AdvertsCollection;
+
+// Здесь хранятся объявления
+// С помощью ключевого слова extern указываем,
+// что эта переменная является общей для всех файлов,
+// в которых подключается текущий заголовочный файл
+extern AdvertsCollection db;
+
+
+
+/**
+ * Чтение бинарного файла с коллекцией рекламных объявлений
+ * @param filepath Путь к бинарному файлу
+ */
+AdvertsCollection readFromBinaryFile(char *filepath);
+
+/**
+ * Запись коллекции рекламных объявлений в бинарный файл
+ * @param filepath Путь к бинарному файлу (будет создан новый, если не существует)
+ * @param collection Коллекция с рекламными объявлениями
+ */
+void writeToBinaryFile(char *filepath, AdvertsCollection collection);
+
+/**
  * Преобразование типа объявления в строку
  * @param type Тип объявления
  * @return Строковое представление типа объявления
@@ -82,8 +113,14 @@ char* dateToStr(Date date);
 /**
  * Вывод информации об объявлении
  * @param advert Объявление
+ * @param number Номер (для вывода)
  */
-void printAdvert(Advert advert);
+void printAdvert(Advert advert, int number);
+
+/**
+ * Вывод информации о всех объявлениях
+ */
+void printAllAdverts();
 
 /**
  * Добавление объявления в массив
@@ -103,21 +140,5 @@ void updateAdvert(int index, Advert advert);
  * @param index Индекс объявления
  */
 void removeAdvert(int index);
-
-
-
-/**
- * Коллекция для хранения объявлений
- */
-typedef struct {
-    int count;
-    Advert elements[10];
-} AdvertsCollection;
-
-// Здесь хранятся объявления
-// С помощью ключевого слова extern указываем,
-// что эта переменная является общей для всех файлов,
-// в которых подключается текущий заголовочный файл
-extern AdvertsCollection db;
 
 #endif
