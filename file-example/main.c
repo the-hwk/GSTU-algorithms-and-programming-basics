@@ -20,36 +20,50 @@ int main() {
 
 void menuAddAdvert() {
     Advert advert = inputAdvert();
-    saveAdvert(advert);
+    
+    // Т.к. функция saveAdvert возвращает 1 или 0,
+    // что обозначает успешна ли она была выполнена или нет,
+    // то можно вызвать ее в конструкции if-else
+    if (saveAdvert(advert)) {
+        printf("Advert added!\n");
+    }
 }
 
 void menuUpdateAdvert() {
-    int index = -1;
+    int number = -1;
 
-    printf("Input index of advert: ");
-    scanf("%d", &index);
+    printf("Enter the number of advert: ");
+    scanf("%d", &number);
 
     Advert advert = inputAdvert();
-    updateAdvert(index - 1, advert);
+
+    if (updateAdvert(number - 1, advert)) {
+        printf("The advert #%d updated!\n", number);
+    }
 }
 
 void menuShowAdverts() {
-    // printf("All adverts:\n");
-    // for (int i = 0; i < db.count; i++) {
-    //     printf("---%d---\n", (i + 1));
-    //     printAdvert(db.elements[i]);
-    //     printf("\n");
-    // }
     printAllAdverts();
 }
 
 void menuRemoveAdvert() {
-    int index = -1;
+    int number = -1;
 
-    printf("Input index of advert: ");
-    scanf("%d", &index);
+    printf("Enter the number of advert: ");
+    scanf("%d", &number);
 
-    removeAdvert(index - 1);
+    if (removeAdvert(number - 1)) {
+        printf("The advert #%d removed!\n", number);
+    }
+}
+
+void menuRemoveByMonth() {
+    int month = -1;
+
+    printf("Enter the month number: ");
+    scanf("%d", &month);
+
+    printf("Removed %d adverts!\n", removeAdvertsByMonth(month));
 }
 
 void menuSaveToFile() {
@@ -59,7 +73,7 @@ void menuSaveToFile() {
 
 void menuReadFromFile() {
     db = readFromBinaryFile("data.bin");
-    printf("Data loaded from file!\n");
+    printf("Data loaded from the file!\n");
 }
 
 void runConsoleMenu() {
@@ -69,8 +83,9 @@ void runConsoleMenu() {
         printf("2. Update advert\n");
         printf("3. Remove advert\n");
         printf("4. Show adverts\n");
-        printf("5. Save to file\n");
-        printf("6. Read from file\n");
+        printf("5. Remove by month\n");
+        printf("6. Save to file\n");
+        printf("7. Read from file\n");
         printf("0. Exit\n");
 
         scanf("%d", &userInput);
@@ -91,9 +106,12 @@ void runConsoleMenu() {
                 menuShowAdverts();
                 break;
             case 5:
-                menuSaveToFile();
+                menuRemoveByMonth();
                 break;
             case 6:
+                menuSaveToFile();
+                break;
+            case 7:
                 menuReadFromFile();
                 break;
         }

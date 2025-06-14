@@ -8,8 +8,10 @@
 #include <stdlib.h>
 #include "advert.h"
 
-// Шаблон для вывода элементов структуры
-const char *TEMPLATE = "|%2s|%-30s|%-10s|%-10s|%-70s|\n";
+// Шаблон для вывода шапки таблицы
+const char *HEAD_TEMPLATE = "|%2s|%-30s|%-10s|%-10s|%-70s|\n";
+// Шаблон для вывода строки таблицы
+const char *ROW_TEMPLATE = "|%02d|%-30s|%-10s|%02d-%02d-%4d|%-70s|\n";
 
 AdvertsCollection readFromBinaryFile(char *filepath) {
     // Открываем бинарный файл в режиме чтения
@@ -19,7 +21,7 @@ AdvertsCollection readFromBinaryFile(char *filepath) {
     // (условие: если он не открылся)
     if (file == NULL) {
         // Выводим ошибку в стандартный поток ошибок
-        perror("Ошибка открытия файла!");
+        perror("File opening error!");
         // Завершаем программу с кодом ошибки 1 (ошибка выполнения)
         exit(EXIT_FAILURE);
     }
@@ -43,7 +45,7 @@ void writeToBinaryFile(char *filepath, AdvertsCollection collection) {
     // (обычно ошибка бывает, когда файловая система
     // запрещает создание файла)    
     if (file == NULL) {
-        perror("Ошибка открытия/создания файла!");
+        perror("File opening/creating error!");
         exit(EXIT_FAILURE);
     }
 
@@ -65,7 +67,7 @@ void inputStr(char *str, int size) {
 }
 
 Type inputType() {
-    printf("Input a type of advert:\n");
+    printf("Enter the type of advert:\n");
     printf("1. Private\n");
     printf("2. Commercial\n");
 
@@ -88,45 +90,25 @@ Type inputType() {
     return type;
 }
 
-Date strToDate(char *strDate) {
-    const char *delimiter = "-";    // разделитель элементов даты
-
-    int i = 1;
+Date inputDate() {
     Date date;
-    char *token = strtok(strDate, delimiter);    // Получаем первый элемент даты
-    // и преобразуем элементы даты (строки) в число и записываем в Date
-    while (token)
-    {
-        if (i == 1) date.day = atoi(token);
-        else if (i == 2) date.month = atoi(token);
-        else if (i == 3) date.year = atoi(token);
 
-        i++;
-        token = strtok(0, delimiter);    // получаем следующий элемент даты
-    }
+    printf("Enter the date in format DD-MM-YY: ");
+    scanf("%d-%d-%d", &date.day, &date.month, &date.year);
     
     return date;
-}
-
-Date inputDate() {
-    char strDate[11];
-
-    printf("Input a date in format DD-MM-YY: ");
-    inputStr(strDate, sizeof(strDate));
-
-    return strToDate(strDate);
 }
 
 Advert inputAdvert() {
     Advert advert;
 
-    printf("Input your fullname: ");
-    inputStr(advert.fullName, sizeof(advert.fullName));
+    printf("Enter your fullname: ");
+    inputStr(advert.fullname, sizeof(advert.fullname));
 
     advert.type = inputType();
     advert.date = inputDate();
 
-    printf("Input advert text:\n");
+    printf("Enter the text of advert:\n");
     inputStr(advert.text, sizeof(advert.text));
 
     return advert;
@@ -144,44 +126,23 @@ char* typeToStr(Type type) {
     }
 }
 
-char* dateToStr(Date date) {
-    // если необходимо вернуть строковую переменную
-    // из функции, то необходимо выделить память динамически
-    char *strDate = malloc(sizeof(char) * 11);
-
-    // Эта функция аналогична printf,
-    // но она сохраняет форматированную строку
-    // в переменную
-    sprintf(
-        strDate,           // буфер, куда сохраняется строка
-        "%d-%d-%d",        // формат (как в printf)
-        date.day, date.month, date.year
-    );
-
-    return strDate;
-}
-
 /**
  * Вывод шапки таблицы
  */
 void printHead() {
-    printf(TEMPLATE, "#", "Customer", "Type", "Date", "Text");
+    printf(HEAD_TEMPLATE, "#", "Customer", "Type", "Date", "Text");
 }
 
 void printAdvert(Advert advert, int number) {
-    char *strDate = dateToStr(advert.date);
-
-    char strNumber[2];
-    sprintf(strNumber, "%d", number);
-
-    printf(TEMPLATE,
-        strNumber,
-        advert.fullName, 
+    printf(ROW_TEMPLATE,
+        number,
+        advert.fullname,
         typeToStr(advert.type), 
-        strDate,
-        advert.text);
-
-    free(strDate);
+        advert.date.day,
+        advert.date.month,
+        advert.date.year,
+        advert.text
+    );
 }
 
 void printAllAdverts() {
@@ -192,28 +153,54 @@ void printAllAdverts() {
     }
 }
 
-void saveAdvert(Advert advert) {
-    // если коллекция неполная, то добавляем
+char saveAdvert(Advert advert) {
+    // Если коллекция неполная, то добавляем
     if (db.count < sizeof(db.elements)) {
         db.elements[db.count++] = advert;
+        return 1;
     }
+
+    return 0;
 }
 
-void updateAdvert(int index, Advert advert) {
-    // если индекс верный, то обновляем
-    if (index < db.count) {
+char updateAdvert(int index, Advert advert) {
+    // Если индекс верный, то обновляем
+    if (index >= 0 && index < db.count) {
         db.elements[index] = advert;
+        return 1;
     }
+
+    return 0;
 }
 
-void removeAdvert(int index) {
-    // если индекс верный, то удаляем
+char removeAdvert(int index) {
+    // Если индекс верный, то удаляем
     // путем смещения элементов массива
-    if (index < db.count) {
+    if (index >= 0 && index < db.count) {
         for (int i = index; i < db.count - 1; i++) {
             db.elements[i] = db.elements[i + 1];
         }
 
         db.count--;
+
+        return 1;
     }
+
+    return 0;
+}
+
+int removeAdvertsByMonth(int month) {
+    int removed = 0;    // счетчик удаленных объявлений
+
+    for (int i = 0; i < db.count; i++) {
+        // Если месяц выхода объявления совпадает, то удаляем его
+        if (db.elements[i].date.month == month) {
+            // Удаляем вызовом функции для удаления объявления
+            // при этом после удаления уменьшаем индекс на 1
+            // и добавляем 1 к счетчику удаленных объявлений
+            removed += removeAdvert(i--);
+        }
+    }
+
+    return removed;
 }

@@ -33,13 +33,13 @@ typedef struct {
 
 /**
  * Рекламное объявление
- * @param fullName ФИО заказчика
+ * @param fullname ФИО заказчика
  * @param type Тип объявления
  * @param date Дата выхода объявления
  * @param text Текст объявления
  */
 typedef struct {
-    char fullName[100];
+    char fullname[30];
     Type type;
     Date date;
     char text[300];
@@ -125,20 +125,32 @@ void printAllAdverts();
 /**
  * Добавление объявления в массив
  * @param advert Объявление
+ * @return 1, если объявление добавлено, иначе 0 (коллекция заполнена)
  */
-void saveAdvert(Advert advert);
+char saveAdvert(Advert advert);
 
 /**
  * Обновление объявления по указанному индексу
  * @param index Индекс объявления, которое необходимо изменить
  * @param advert Объявление
+ * @return 1, если объявление обновлено, иначе 0 (если объявления
+ * по указанному индексу не существует
  */
-void updateAdvert(int index, Advert advert);
+char updateAdvert(int index, Advert advert);
 
 /**
  * Удаление объявления по индексу
  * @param index Индекс объявления
+ * @return 1, если объявление удалено, иначе 0 (если объявления
+ * по указанному индексу не существует)
  */
-void removeAdvert(int index);
+char removeAdvert(int index);
+
+/**
+ * Удаление объявлений по месяцу их выхода
+ * @param month Месяц выхода объявления
+ * @return Количество удаленных объявлений
+ */
+int removeAdvertsByMonth(int month);
 
 #endif
