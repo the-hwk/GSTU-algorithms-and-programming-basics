@@ -27,7 +27,7 @@
 
 Пример блок-схемы:
 <p align="center">
-  <img src="./img/README-2.png" alt="README-2.png" width="30%">
+  <img src="./img/README-2.png" alt="README-2.png" width="25%">
 </p>
 
 #### Тестирование и верификация
@@ -41,7 +41,7 @@
 
 Например, есть следующая задача: вычислить значение функции, заданное формулой:
 <p align="center">
-  <img src="./img/README-3.png" alt="README-3.png" width="70%">
+  <img src="./img/README-3.png" alt="README-3.png" width="50%">
 </p>
 Входными данными в этой задаче является переменная `x`. Тесты необходимо составить для случаев:
 - если `x` больше или равен 7
