@@ -88,13 +88,16 @@
 ```C
 float x_start = 0.0f;
 float x_end   = 15.3f;
-float step    = 0.1f;
+float x_step    = 0.1f;
 
 float y       = 0.0;
 
-for (int x = x_start; x_start <= x_end; x += step) {
+int n = ((x_end - x_start) / x_step) + 1;
+
+for (int i = 0; i < n; i++) {
     y = x * 2;
     printf("y(%.3f) = %.3f", x, y);
+    x += x_step;
 }
 ```
 
