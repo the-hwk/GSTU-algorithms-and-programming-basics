@@ -2,10 +2,10 @@
 
 ### Разделы
 
-- [Требования к лабораторным работам](./requirements.md)
-- [Теория по циклам](./theory-cycles.md)
-- [Теория по массивам](./theory-arrays.md)
-- [Теория для выполнения курсовой работы](./theory-course-work.md)
+- [Требования к лабораторным работам](./chapters/requirements.md)
+- [Теория по циклам](./chapters/theory-cycles.md)
+- [Теория по массивам](./chapters/theory-arrays.md)
+- [Теория для выполнения курсовой работы](./chapters/theory-course-work.md)
 
 ### Советы по разработке программ
 
