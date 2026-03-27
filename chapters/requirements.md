@@ -5,7 +5,9 @@
 ### Шаблон и структура отчета (2-й семестр)
 В этом семестре требования к оформлению отчета повышаются. Отчет - это, прежде всего, небольшая документация к разработанным программам, поэтому он должен быть оформлен адекватно.
 
-Немного изменена структура отчета. Файл с новой структурой и ее описанием: [Word-файл](./files/template-report.docx) (его можно скачать. Нажимаем на него, далее справа расположена кнопка загрузки).
+Немного изменена структура отчета. Файл с новой структурой и ее описанием: [Word-файл](../files/template-report.docx) (его можно скачать. Нажимаем на него, далее справа расположена кнопка загрузки).
+
+Методические указания по оформлению отчета расположены тут: [файл](../files/report-requirements.docx).
 
 Начинать оформлять нужно уже с 1-й л.р. (двумерные массивы).
 
@@ -13,7 +15,7 @@
 **Блок-схемы** можно составлять в https://app.diagrams.net/. Элементы для нее находятся в соответствующей вкладке - "Блок-схемы", линии для соединения - во вкладке "Общие".
 
 <p align="center">
-  <img src="./img/README-1.png" alt="README-1.png" width="30%">
+  <img src="../img/README-1.png" alt="README-1.png" width="30%">
 </p>
 
 **Шрифт текста** на блок-схемах: *Times New Roman*, размер: 14 пт.
@@ -22,22 +24,22 @@
 
 Пример блок-схемы:
 <p align="center">
-  <img src="./img/README-2.png" alt="README-2.png" width="25%">
+  <img src="../img/README-2.png" alt="README-2.png" width="25%">
 </p>
 
 Блок-схемы для ветвлений (if-else):
 <p align="center">
-  <img src="./img/README-4.png" alt="README-4.png" width="85%">
+  <img src="../img/README-4.png" alt="README-4.png" width="85%">
 </p>
 
 Блок-схемы для ветвлений (switch):
 <p align="center">
-  <img src="./img/README-5.png" alt="README-5.png" width="85%">
+  <img src="../img/README-5.png" alt="README-5.png" width="85%">
 </p>
 
 Блок-схемы для циклов:
 <p align="center">
-  <img src="./img/README-6.png" alt="README-6.png" width="85%">
+  <img src="../img/README-6.png" alt="README-6.png" width="85%">
 </p>
 
 ### Тестирование и верификация
