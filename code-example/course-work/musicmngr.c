@@ -4,132 +4,132 @@
 #include <string.h>
 #include <stdio.h>
 
-#define CSV_COLS_COUNT   6      // Количество столбцов исх. данных
-#define CSV_COL_MAX_SIZE 31     // Макс. кол-во символов значения столбца
+#define CSV_COLS_COUNT   6      // РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ РёСЃС…. РґР°РЅРЅС‹С…
+#define CSV_COL_MAX_SIZE 31     // РњР°РєСЃ. РєРѕР»-РІРѕ СЃРёРјРІРѕР»РѕРІ Р·РЅР°С‡РµРЅРёСЏ СЃС‚РѕР»Р±С†Р°
 
-#define GENRE_STR_SIZE      11  // Макс. размер строки жанра
-#define DURATION_STR_SIZE   7   // Макс. размер строки длительности
-#define TRACK_STR_SIZE      100 // Макс. размер строки записи муз. комп.
-#define STATISTICS_STR_SIZE 50  // Макс. размер строки записи статистики
+#define GENRE_STR_SIZE      11  // РњР°РєСЃ. СЂР°Р·РјРµСЂ СЃС‚СЂРѕРєРё Р¶Р°РЅСЂР°
+#define DURATION_STR_SIZE   7   // РњР°РєСЃ. СЂР°Р·РјРµСЂ СЃС‚СЂРѕРєРё РґР»РёС‚РµР»СЊРЅРѕСЃС‚Рё
+#define TRACK_STR_SIZE      100 // РњР°РєСЃ. СЂР°Р·РјРµСЂ СЃС‚СЂРѕРєРё Р·Р°РїРёСЃРё РјСѓР·. РєРѕРјРї.
+#define STATISTICS_STR_SIZE 50  // РњР°РєСЃ. СЂР°Р·РјРµСЂ СЃС‚СЂРѕРєРё Р·Р°РїРёСЃРё СЃС‚Р°С‚РёСЃС‚РёРєРё
 
-// CSV-заголовки для файлов
-#define PLAYLIST_CSV_HEADER   "Номер;Исполнитель;Название;Жанр;Год;Длительность\n"
-#define STATISTICS_CSV_HEADER "Номер;Жанр;Общая длительность;Средняя Длительность\n"
+// CSV-Р·Р°РіРѕР»РѕРІРєРё РґР»СЏ С„Р°Р№Р»РѕРІ
+#define PLAYLIST_CSV_HEADER   "РќРѕРјРµСЂ;РСЃРїРѕР»РЅРёС‚РµР»СЊ;РќР°Р·РІР°РЅРёРµ;Р–Р°РЅСЂ;Р“РѕРґ;Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ\n"
+#define STATISTICS_CSV_HEADER "РќРѕРјРµСЂ;Р–Р°РЅСЂ;РћР±С‰Р°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ;РЎСЂРµРґРЅСЏСЏ Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ\n"
 
-// Строки форматирования для вывода
+// РЎС‚СЂРѕРєРё С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ РґР»СЏ РІС‹РІРѕРґР°
 #define TABLE_PLAYLIST_HEAD_TEMPLATE "|%5s|%-30s|%-30s|%-10s|%-4s|%-12s|\n"
 #define TABLE_PLAYLIST_ROW_TEMPLATE  "|%5d|%-30s|%-30s|%-10s|%d|%-12s|\n"
 
 /**
- * Разбивает строку на части по разделителю
- * @param string Строка
- * @param separator Разделитель
- * @param parts Массив с частями строки
- * @return Количество частей
+ * Р Р°Р·Р±РёРІР°РµС‚ СЃС‚СЂРѕРєСѓ РЅР° С‡Р°СЃС‚Рё РїРѕ СЂР°Р·РґРµР»РёС‚РµР»СЋ
+ * @param string РЎС‚СЂРѕРєР°
+ * @param separator Р Р°Р·РґРµР»РёС‚РµР»СЊ
+ * @param parts РњР°СЃСЃРёРІ СЃ С‡Р°СЃС‚СЏРјРё СЃС‚СЂРѕРєРё
+ * @return РљРѕР»РёС‡РµСЃС‚РІРѕ С‡Р°СЃС‚РµР№
  */
 int split(const char *string, const char separator, char parts[CSV_COLS_COUNT][CSV_COL_MAX_SIZE]) {
     // Code
 }
 
 /**
- * Заполняет экземпляр перечисления Genre данными из строки.
- * Если элемент перечисления отсутсвует, то устанавливается
- * значение UNKNOWN
- * @param string Строка с названием жанра
- * @param genreToFill Указатель на перечисление Genre
+ * Р—Р°РїРѕР»РЅСЏРµС‚ СЌРєР·РµРјРїР»СЏСЂ РїРµСЂРµС‡РёСЃР»РµРЅРёСЏ Genre РґР°РЅРЅС‹РјРё РёР· СЃС‚СЂРѕРєРё.
+ * Р•СЃР»Рё СЌР»РµРјРµРЅС‚ РїРµСЂРµС‡РёСЃР»РµРЅРёСЏ РѕС‚СЃСѓС‚СЃРІСѓРµС‚, С‚Рѕ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ
+ * Р·РЅР°С‡РµРЅРёРµ UNKNOWN
+ * @param string РЎС‚СЂРѕРєР° СЃ РЅР°Р·РІР°РЅРёРµРј Р¶Р°РЅСЂР°
+ * @param genreToFill РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РїРµСЂРµС‡РёСЃР»РµРЅРёРµ Genre
  */
 void GenreFromString(const char *string, Genre *genreToFill) {
     // Code
 }
 
 /**
- * Преобразует перечисление Genre в строку
- * @param genre Указатель на перечисление Genre
- * @param destination Строка назначения
+ * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ РїРµСЂРµС‡РёСЃР»РµРЅРёРµ Genre РІ СЃС‚СЂРѕРєСѓ
+ * @param genre РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РїРµСЂРµС‡РёСЃР»РµРЅРёРµ Genre
+ * @param destination РЎС‚СЂРѕРєР° РЅР°Р·РЅР°С‡РµРЅРёСЏ
  */
 void GenreToString(const Genre *genre, char destination[GENRE_STR_SIZE]) {
     // Code
 }
 
 /**
- * Заполняет экземпляр структуры Duration данными из строки
- * @param string Строка с длительностью формата mm:ss (минуты:секунды)
- * @param durationToFill Указатель на структуру Duration
+ * Р—Р°РїРѕР»РЅСЏРµС‚ СЌРєР·РµРјРїР»СЏСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ Duration РґР°РЅРЅС‹РјРё РёР· СЃС‚СЂРѕРєРё
+ * @param string РЎС‚СЂРѕРєР° СЃ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊСЋ С„РѕСЂРјР°С‚Р° mm:ss (РјРёРЅСѓС‚С‹:СЃРµРєСѓРЅРґС‹)
+ * @param durationToFill РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ Duration
  */
 void DurationFromString(const char *string, Duration *durationToFill) {
     // Code
 }
 
 /**
- * Преобразует структуру Duration в строку формата
- * mm:ss (минуты:секунды)
- * @param genre Указатель на структуру Duration
- * @param destination Строка назначения
+ * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ Duration РІ СЃС‚СЂРѕРєСѓ С„РѕСЂРјР°С‚Р°
+ * mm:ss (РјРёРЅСѓС‚С‹:СЃРµРєСѓРЅРґС‹)
+ * @param genre РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ Duration
+ * @param destination РЎС‚СЂРѕРєР° РЅР°Р·РЅР°С‡РµРЅРёСЏ
  */
 void DurationToString(const Duration *duration, char destination[DURATION_STR_SIZE]) {
     // Code
 }
 
 /**
- * Преобразует длительность музыкальной композиции из секунд
- * в экземпляр структуры Duration
- * @param duration Указатель на структуру Duration
- * @param seconds Длительность в секундах
+ * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РјСѓР·С‹РєР°Р»СЊРЅРѕР№ РєРѕРјРїРѕР·РёС†РёРё РёР· СЃРµРєСѓРЅРґ
+ * РІ СЌРєР·РµРјРїР»СЏСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ Duration
+ * @param duration РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ Duration
+ * @param seconds Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РІ СЃРµРєСѓРЅРґР°С…
  */
 void DurationFromSeconds(Duration *duration, const int seconds) {
     // Code
 }
 
 /**
- * Преобразует экземпляр структуры Duration в секунды
- * @param duration Указатель на структуру Duration
- * @return Длительность музыкальной композиции в секундах
+ * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ СЌРєР·РµРјРїР»СЏСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ Duration РІ СЃРµРєСѓРЅРґС‹
+ * @param duration РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ Duration
+ * @return Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ РјСѓР·С‹РєР°Р»СЊРЅРѕР№ РєРѕРјРїРѕР·РёС†РёРё РІ СЃРµРєСѓРЅРґР°С…
  */
 int DurationToSeconds(const Duration *duration) {
     // Code
 }
 
 /**
- * Заполняет экземпляр структуры Track данными из строки
- * формата csv
- * @param string Строка формата csv с данными о музыкальной
- * композиции (ID;Artist;Title;Genre;Year;Duration)
- * @param trackToFill Указатель на структуру Track
+ * Р—Р°РїРѕР»РЅСЏРµС‚ СЌРєР·РµРјРїР»СЏСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ Track РґР°РЅРЅС‹РјРё РёР· СЃС‚СЂРѕРєРё
+ * С„РѕСЂРјР°С‚Р° csv
+ * @param string РЎС‚СЂРѕРєР° С„РѕСЂРјР°С‚Р° csv СЃ РґР°РЅРЅС‹РјРё Рѕ РјСѓР·С‹РєР°Р»СЊРЅРѕР№
+ * РєРѕРјРїРѕР·РёС†РёРё (ID;Artist;Title;Genre;Year;Duration)
+ * @param trackToFill РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ Track
  */
 void TrackFromCsvString(const char *string, Track *trackToFill) {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - GenreFromString
     // - DurationFromString
 }
 
 /**
- * Вывод в stdout шапки таблицы
+ * Р’С‹РІРѕРґ РІ stdout С€Р°РїРєРё С‚Р°Р±Р»РёС†С‹
  */
 void PlaylistPrintTableHead() {
     // Code
 }
 
 /**
- * Вывод в stdout футера таблицы
+ * Р’С‹РІРѕРґ РІ stdout С„СѓС‚РµСЂР° С‚Р°Р±Р»РёС†С‹
  */
 void PlaylistPrintTableFooter() {
     // Code
 }
 
 /**
- * Выводит в stdout строку таблицы
- * @param track Указатель на структуру Track
+ * Р’С‹РІРѕРґРёС‚ РІ stdout СЃС‚СЂРѕРєСѓ С‚Р°Р±Р»РёС†С‹
+ * @param track РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ Track
  */
 void TrackPrintTableRow(const Track *track) {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - GenreToString
     // - DurationToString
 }
 
 /**
- * Сбрасывает статистику
+ * РЎР±СЂР°СЃС‹РІР°РµС‚ СЃС‚Р°С‚РёСЃС‚РёРєСѓ
  */
 void StatisticsReset() {
     for (int i = 0; i < globalStatistics.count; i++) {
@@ -142,22 +142,22 @@ void StatisticsReset() {
 }
 
 /**
- * Сортировка плейлиста по жанру (в алфавитном порядке)
- * @param sorted Указатель на структуру PlaylistSorted
+ * РЎРѕСЂС‚РёСЂРѕРІРєР° РїР»РµР№Р»РёСЃС‚Р° РїРѕ Р¶Р°РЅСЂСѓ (РІ Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ)
+ * @param sorted РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ PlaylistSorted
  */
 void PlaylistSortByGenre(PlaylistSorted *sorted) {
     // Code
 }
 
 /**
- * Преобразует экземпляр структуры GenreStatistics в csv-строку
- * @param statistics Указатель на структуру GenreStatistics
- * @param number Порядковый номер
- * @param destination Строка назначения
+ * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ СЌРєР·РµРјРїР»СЏСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ GenreStatistics РІ csv-СЃС‚СЂРѕРєСѓ
+ * @param statistics РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ GenreStatistics
+ * @param number РџРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ
+ * @param destination РЎС‚СЂРѕРєР° РЅР°Р·РЅР°С‡РµРЅРёСЏ
  */
 void StatisticsToCsvString(const GenreStatistics *statistics, int number, char destination[STATISTICS_STR_SIZE]) {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - GenreToString
     // - DurationFromSeconds
     // - DurationToString
@@ -166,18 +166,18 @@ void StatisticsToCsvString(const GenreStatistics *statistics, int number, char d
 
 
 /* -------------------------------------------------- */
-/* Реализации функций заголовочного файла musicmngr.h */
+/* Р РµР°Р»РёР·Р°С†РёРё С„СѓРЅРєС†РёР№ Р·Р°РіРѕР»РѕРІРѕС‡РЅРѕРіРѕ С„Р°Р№Р»Р° musicmngr.h */
 /* -------------------------------------------------- */
 
 int PlaylistReadFromCsv(const char *filepath) {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - TrackFromCsvString
 }
 
 void PlaylistPrintTable() {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - PlaylistPrintTableHead
     // - TrackPrintTableRow
     // - PlaylistPrintTableFooter
@@ -189,13 +189,13 @@ void StatisticsPrintDiagramm() {
 
 void StatisticsCalc() {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - StatisticsReset
     // - PlaylistSortByGenre
 }
 
 int StatisticsSaveToCsv(const char *filepath) {
     // Code
-    // Здесь вызываются функции:
+    // Р—РґРµСЃСЊ РІС‹Р·С‹РІР°СЋС‚СЃСЏ С„СѓРЅРєС†РёРё:
     // - StatisticsToCsvString
 }
